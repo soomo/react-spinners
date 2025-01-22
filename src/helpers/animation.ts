@@ -9,15 +9,24 @@ export const createAnimation = (loaderName: string, frames: string, suffix: stri
   document.head.appendChild(styleEl);
   const styleSheet = styleEl.sheet;
 
+  if (!styleSheet) {
+    return animationName;
+  }
+
   const keyFrames = `
     @keyframes ${animationName} {
       ${frames}
     }
   `;
-
-  if (styleSheet) {
+  try {
     styleSheet.insertRule(keyFrames, 0);
-  }
+  } catch (e) {
+    if (!(e instanceof DOMException)) {
+      throw e;
+    }
 
+    const webkitKeyFrames = keyFrames.replace('@keyframes', '@-webkit-keyframes');
+    styleSheet.insertRule(webkitKeyFrames, 0);
+  }
   return animationName;
 };
