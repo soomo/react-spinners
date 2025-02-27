@@ -21,10 +21,6 @@ export const createAnimation = (loaderName: string, frames: string, suffix: stri
   try {
     styleSheet.insertRule(keyFrames, 0);
   } catch (e) {
-    if (!(e instanceof DOMException)) {
-      throw e;
-    }
-
     const webkitKeyFrames = keyFrames.replace('@keyframes', '@-webkit-keyframes');
     styleSheet.insertRule(webkitKeyFrames, 0);
   }
